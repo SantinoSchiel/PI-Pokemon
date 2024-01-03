@@ -3,6 +3,7 @@ const getAllPokemons = require('../controllers/getAllPokemons');
 const getPokemonById = require('../controllers/getPokemonById');
 const getPokemonByName = require('../controllers/getPokemonByName');
 const createPokemon = require('../controllers/createPokemon');
+const getAllTypes = require('../controllers/getAllTypes');
 // Importar todos los routers;
 // Ejemplo: const authRouter = require('./auth.js');
 
@@ -16,6 +17,6 @@ router.get("/pokemons", getAllPokemons);
 router.get("/pokemons/name", getPokemonByName);
 router.get("/pokemons/:id", getPokemonById);
 router.post("/pokemons", createPokemon);
-
+router.get("/types", getAllTypes);
 
 module.exports = router;
