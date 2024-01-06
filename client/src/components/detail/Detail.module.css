@@ -1,0 +1,62 @@
+.cardContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.card {
+    backdrop-filter: blur(8px);
+    border-radius: 8px;
+    overflow: hidden;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(8px);
+    transition: transform 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: scale(1.05);
+}
+
+.imageContainer {
+    overflow: hidden;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
+
+.image {
+    width: 60%;
+    height: auto;
+}
+
+.info {
+    padding: 16px;
+    font-size:large;
+    font-weight: bold;
+}
+
+.name {
+    margin-bottom: 8px;
+    font-size: 2em;
+    color: #333;
+}
+
+.goBackButton {
+    position: absolute;
+    top: 16px;
+    left: 16px;
+    background-color: #343a40;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  
+  .goBackButton:hover {
+    background-color: #6c757d; /* Cambio de color al pasar el ratón */
+    border-color: #0056b3; /* Cambio de color del borde al pasar el ratón */
+    color: #ffffff; /* Cambio de color del texto al pasar el ratón */
+  }

@@ -1,26 +1,42 @@
 const axios = require("axios");
 
 const getAllPokemons = async (req, res) => {
-
     const URL = 'https://pokeapi.co/api/v2/pokemon';
-    let allPokemons = [];
+    const limit = 50; // Número de Pokémon por página
+    let allPokemonsData = [];
 
     try {
-        let nextUrl = URL;
+        const page = req.query.page || 1; // Obtener el número de página desde los parámetros de consulta
+        const offset = (page - 1) * limit;
+        const nextUrl = `${URL}?limit=${limit}&offset=${offset}`;
 
-        while (nextUrl) {
-            const { data } = await axios.get(nextUrl);
+        const { data } = await axios.get(nextUrl);
 
-            const pokemons = data.results.map(pokemon => ({
-                name: pokemon.name,
-                info: pokemon.url,
-            }));
+        const pokemons = await Promise.all(data.results.map(async (pokemon) => {
+            const { data: pokemonData } = await axios.get(pokemon.url);
 
-            allPokemons = [...allPokemons, ...pokemons];
-            nextUrl = data.next;
-        }
+            const formattedStats = {};
+            for (const stat of pokemonData.stats) {
+                const statName = stat.stat.name;
+                formattedStats[statName] = stat.base_stat;
+            }
 
-        return res.status(200).json(allPokemons);
+            const types = pokemonData.types.map(type => type.type.name);
+
+            return {
+                id: pokemonData.id,
+                name: pokemonData.name,
+                image: pokemonData.sprites.other.dream_world.front_default,
+                stats: formattedStats,
+                height: pokemonData.height,
+                weight: pokemonData.weight,
+                types: types,
+            };
+        }));
+
+        allPokemonsData = [...allPokemonsData, ...pokemons];
+
+        return res.status(200).json(allPokemonsData);
     } catch (error) {
         return res.status(500).send({ error: error.message });
     }
