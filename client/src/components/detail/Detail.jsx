@@ -3,7 +3,6 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import style from './Detail.module.css';
 
-
 export default function Detail() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -29,18 +28,22 @@ export default function Detail() {
         setShowInfo(true);
     };
 
-
     return (
         <div className={style.cardContainer}>
-        <Link to="/home" className={style.goBackButton}>
-            Go Back
-        </Link>
-        <div className={style.card} onMouseEnter={handleMouseEnter}>
-            <div className={style.imageContainer}>
-                <img src={pokemons.image} alt={pokemons.name} className={style.image} />
+            <Link to="/home" className={style.goBackButton}>
+                Go Back
+            </Link>
+            <div className={style.card}>
+                <div className={style.imageContainer}>
+                    <img onMouseEnter={handleMouseEnter} src={pokemons.image} alt={pokemons.name} className={style.image} />
+                </div>
                 {showInfo && (
                     <div className={style.info}>
                         <h2 className={style.name}>{pokemons.name}</h2>
+                        <p>Hp: {pokemons.stats && pokemons.stats.hp}</p>
+                        <p>Atack: {pokemons.stats && pokemons.stats.attack}</p>
+                        <p>Defense: {pokemons.stats && pokemons.stats.defense}</p>
+                        <p>Speed: {pokemons.stats && pokemons.stats.speed}</p>
                         <p>ID: {pokemons.id}</p>
                         <p>Height: {pokemons.height}</p>
                         <p>Weight: {pokemons.weight}</p>
@@ -49,6 +52,5 @@ export default function Detail() {
                 )}
             </div>
         </div>
-    </div>
-    )
+    );
 }

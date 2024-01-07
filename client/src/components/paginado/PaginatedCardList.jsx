@@ -1,16 +1,23 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+import React, { useEffect, useState } from 'react';
 import Card from '../card/Card';
 import style from './PaginatedCardList.module.css';
 
-const PaginatedCardList = ({pokemons}) => {
+const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack  }) => {
     const itemsPerPage = 12;
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
+    let currentItems = [];
+
+    if (dataFromSearchBar.length > 0) {
+        currentItems = dataFromSearchBar;
+    } else {
+        currentItems = pokemons;
+    }
+
 
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = pokemons.slice(indexOfFirstItem, indexOfLastItem);
+    const visibleItems = currentItems.slice(indexOfFirstItem, indexOfLastItem);
 
     const totalPages = Math.ceil(pokemons.length / itemsPerPage);
 
@@ -22,39 +29,17 @@ const PaginatedCardList = ({pokemons}) => {
         setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
 
-    // const loadMorePokemons = async () => {
-    //     if (loading) return;
-
-    //     try {
-    //         setLoading(true);
-    //         const response = await axios.get(`http://localhost:3001/pokemons?page=${currentPage}`);
-    //         setPokemons(prevPokemons => [...prevPokemons, ...response.data]);
-    //         setPreloadedPage(prevPage => prevPage + 1);
-    //     } catch (error) {
-    //         console.error('Error fetching more Pokémon:', error.message);
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // };
-
-    // Cargar los primeros Pokémon cuando el componente se monta
-    // useEffect(() => {
-    //     loadMorePokemons();
-    // }, []);
-
-    // const handleClick = () => {
-    //     loadMorePokemons();
-    // };
-
-    // const handleBothClicks = () => {
-    //     handleNextClick();
-    //     handleClick();
-    // };
+    const totalPagesToShow = currentItems === dataFromSearchBar ? 1 : totalPages;
 
     return (
         <div className={style.cardContainer}>
+            {currentItems === dataFromSearchBar && (
+                    <button className={style.buttonGoBack} onClick={onGoBack} >
+                        Go back
+                    </button>
+                )}
             <div className={style.cardList}>
-                {currentItems.map(pokemon => (
+                {visibleItems.map(pokemon => (
                     <Card
                         key={pokemon.id}
                         id={pokemon.id}
@@ -66,11 +51,11 @@ const PaginatedCardList = ({pokemons}) => {
             </div>
             <div className={style.pagination}>
                 <button onClick={handlePrevClick} disabled={currentPage === 1}>
-                    Anterior
+                    Back
                 </button>
-                <span>{`Página ${currentPage} de ${totalPages}`}</span>
+                <span>{`Page ${currentPage} of ${totalPagesToShow}`}</span>
                 <button onClick={handleNextClick} disabled={currentPage === totalPages}>
-                    Siguiente
+                    Next
                 </button>
             </div>
             {loading && <p>Loading...</p>}

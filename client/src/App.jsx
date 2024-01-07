@@ -30,10 +30,6 @@ function App() {
     Pokemons();
   }, [])
 
-  //! sacar
-  useEffect(() => {
-    console.log(pokemons, 'es pokemons');
-  }, [pokemons]);
 
   return (
     <div className="App">

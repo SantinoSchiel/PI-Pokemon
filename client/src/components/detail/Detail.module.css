@@ -2,16 +2,11 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
 }
 
 .card {
-    backdrop-filter: blur(8px);
-    border-radius: 8px;
-    overflow: hidden;
+    position: relative;
     width: 300px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    backdrop-filter: blur(8px);
     transition: transform 0.2s ease-in-out;
 }
 
@@ -20,26 +15,34 @@
 }
 
 .imageContainer {
+    position: relative;
     overflow: hidden;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
 }
 
 .image {
-    width: 60%;
+    width: 100%;
     height: auto;
+    margin-top: 150px;
 }
 
 .info {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    margin-top: 100px;
     padding: 16px;
-    font-size:large;
+    font-size: large;
     font-weight: bold;
+    white-space: nowrap;
+    backdrop-filter: blur(8px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: left 0.2s ease-in-out;
 }
 
 .name {
-    margin-bottom: 8px;
     font-size: 2em;
     color: #333;
+    margin: 0;
 }
 
 .goBackButton {
@@ -53,10 +56,27 @@
     border-radius: 4px;
     cursor: pointer;
     text-decoration: none;
-  }
-  
-  .goBackButton:hover {
-    background-color: #6c757d; /* Cambio de color al pasar el ratón */
-    border-color: #0056b3; /* Cambio de color del borde al pasar el ratón */
-    color: #ffffff; /* Cambio de color del texto al pasar el ratón */
-  }
+}
+
+.goBackButton:hover {
+    background-color: #6c757d;
+    /* Cambio de color al pasar el ratón */
+    border-color: #0056b3;
+    /* Cambio de color del borde al pasar el ratón */
+    color: #ffffff;
+    /* Cambio de color del texto al pasar el ratón */
+}
+
+.card.expanded .info {
+    max-height: 400px;
+    /* Altura máxima al expandir */
+}
+
+.card.expanded {
+    width: 500px;
+    /* Ancho ampliado */
+}
+
+.card:hover .info {
+    left: calc(100% + 8px);
+}
