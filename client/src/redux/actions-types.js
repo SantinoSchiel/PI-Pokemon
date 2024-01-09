@@ -1,1 +1,3 @@
 export const ALL_POKEMONS = "ALL_POKEMONS";
+export const FILTER_TYPE = "FILTER_TYPE";
+export const FILTER_APIORDB = "FILTER_APIORDB";

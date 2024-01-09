@@ -22,7 +22,6 @@
     color: white;
     border: none;
     margin: 0 8px;
-    /* Agrega espacio entre los botones y el texto (ajusta según sea necesario) */
     padding: 8px 16px;
     cursor: pointer;
 }
@@ -33,9 +32,7 @@
 
 .pagination span {
     font-weight: bold;
-    /* Aplica negrita */
     font-size: 18px;
-    /* Ajusta el tamaño del texto según sea necesario */
     backdrop-filter: blur(5px);
     border-radius: 5%;
     padding: 5px;

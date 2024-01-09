@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Card from '../card/Card';
 import style from './PaginatedCardList.module.css';
 
-const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack  }) => {
+const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
     const itemsPerPage = 12;
     const [currentPage, setCurrentPage] = useState(1);
     const [loading, setLoading] = useState(false);
@@ -31,13 +31,19 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack  }) => {
 
     const totalPagesToShow = currentItems === dataFromSearchBar ? 1 : totalPages;
 
+    useEffect(() => {
+        if (totalPages > 0 && currentPage > totalPages) {
+            setCurrentPage(1);
+        }
+    }, [totalPages, currentPage]);
+
     return (
         <div className={style.cardContainer}>
             {currentItems === dataFromSearchBar && (
-                    <button className={style.buttonGoBack} onClick={onGoBack} >
-                        Go back
-                    </button>
-                )}
+                <button className={style.buttonGoBack} onClick={onGoBack} >
+                    Go back
+                </button>
+            )}
             <div className={style.cardList}>
                 {visibleItems.map(pokemon => (
                     <Card
@@ -49,15 +55,17 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack  }) => {
                     />
                 ))}
             </div>
-            <div className={style.pagination}>
-                <button onClick={handlePrevClick} disabled={currentPage === 1}>
-                    Back
-                </button>
-                <span>{`Page ${currentPage} of ${totalPagesToShow}`}</span>
-                <button onClick={handleNextClick} disabled={currentPage === totalPages}>
-                    Next
-                </button>
-            </div>
+            {totalPagesToShow > 1 && (
+                <div className={style.pagination}>
+                    <button onClick={handlePrevClick} disabled={currentPage === 1}>
+                        Back
+                    </button>
+                    <span>{`Page ${currentPage} of ${totalPagesToShow}`}</span>
+                    <button onClick={handleNextClick} disabled={currentPage === totalPages}>
+                        Next
+                    </button>
+                </div>
+            )}
             {loading && <p>Loading...</p>}
         </div>
     );
