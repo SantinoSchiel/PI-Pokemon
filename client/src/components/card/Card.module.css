@@ -5,18 +5,18 @@
     border: 1px solid #ccc;
     border-radius: 8px;
     padding: 16px;
-    margin: 8px;
-    text-align: center;
+    margin: 1rem;
     transition: transform 0.2s ease-in-out;
-    width: 175px;
-    height: 210px;
+    width: 16rem;
+    height: 24rem;
     backdrop-filter: blur(5px);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     background-color: rgba(128, 128, 128, 0.237);
 }
 
 .conteiner h2 {
-    margin: 0;
+    margin: 1rem;
+    font-size: 2rem;
 }
 
 .conteiner:hover {
@@ -25,7 +25,7 @@
 
 .imagen {
     max-width: 100%;
-    height: 80px;
+    height: 10rem;
     /* Altura fija para la imagen */
     object-fit: cover;
     /* Ajusta la imagen para cubrir el contenedor manteniendo la relación de aspecto */
@@ -46,13 +46,13 @@
 }
 
 .typesList li {
-    margin: 2px 0;
-    /* Añadir espacio entre los elementos de la lista */
+    margin: 0;
+    font-size: 25px;
 }
 
 .subtitle {
-    margin: 8px 0;
-    /* Añadir espacio entre el nombre y los tipos */
+    margin: 1rem;
+    padding: 0;
+    font-size: 2rem;
     color: #000000;
-    /* Color del subtítulo más oscuro */
 }

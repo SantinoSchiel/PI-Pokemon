@@ -14,7 +14,6 @@ function HomePage({ pokemons }) {
     setDataFromSearchBar([]);
   };
 
-  console.log('dataFromSearchBar', dataFromSearchBar)
   return (
     <div className={style.container}>
       <SearchBar pokemons={pokemons} onDataFromSearchBar={handleDataFromSearchBar} />

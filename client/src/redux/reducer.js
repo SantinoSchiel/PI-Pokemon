@@ -1,4 +1,4 @@
-import { ALL_POKEMONS, FILTER_TYPE, FILTER_APIORDB } from "./actions-types"
+import { ALL_POKEMONS, FILTER_TYPE, ORDER_APIORDB } from "./actions-types"
 
 const initialState = {
     pokemons: [],
@@ -8,7 +8,6 @@ const initialState = {
 
 const reducer = (state = initialState, { type, payload }) => {
     switch (type) {
-        // REDUCER | ADD_FAV
         case ALL_POKEMONS: {
             return { ...state, pokemons: payload, allPokemons: payload };
         }
@@ -27,7 +26,7 @@ const reducer = (state = initialState, { type, payload }) => {
                 pokemons: filteredTypes
             }
         }
-        case FILTER_APIORDB: {
+        case ORDER_APIORDB: {
             if (payload === "All") {
                 return {
                     ...state,
@@ -35,10 +34,20 @@ const reducer = (state = initialState, { type, payload }) => {
                 }
             }
             if (payload === "DB") {
+                const filteredOreder = state.allPokemons.filter(pokemon => pokemon.hp);
 
+                return{
+                    ...state,
+                    pokemons: filteredOreder
+                }
             }
             if (payload === "API") {
+                const filteredOreder = state.allPokemons.filter(pokemon => pokemon.stats);
 
+                return{
+                    ...state,
+                    pokemons: filteredOreder
+                }
             }
         }
         default:

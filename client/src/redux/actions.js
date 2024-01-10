@@ -1,4 +1,4 @@
-import { ALL_POKEMONS, FILTER_TYPE, FILTER_APIORDB } from "./actions-types"
+import { ALL_POKEMONS, FILTER_TYPE, ORDER_APIORDB } from "./actions-types"
 
 export const allPokemons = (pokemons) => {
    return {
@@ -14,9 +14,9 @@ export const filterType = (type) => {
    }
 }
 
-export const filterApiOrDb = (apiOrDb) => {
+export const orderApiOrDb = (apiOrDb) => {
    return {
-      type: FILTER_APIORDB,
+      type: ORDER_APIORDB,
       payload: apiOrDb
    }
 }

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import style from './Search.module.css';
 import { useDispatch } from "react-redux";
-import {filterType} from '../../redux/actions';
+import { filterType, orderApiOrDb } from '../../redux/actions';
+import { Link } from 'react-router-dom';
+
 
 function SearchBar({ pokemons, onDataFromSearchBar }) {
 
@@ -41,12 +43,16 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
         dispatch(filterType(event.target.value))
     }
 
+    const handleOrder = event => {
+        dispatch(orderApiOrDb(event.target.value))
+    }
+
 
     return (
         <div className={style.container}>
 
-            <div>
-                <select name="filterApiOrDb">
+            <div className={style.select}>
+                <select name="filterApiOrDb" onChange={handleOrder} >
                     <option value="All"> All </option>
                     <option value="API"> API </option>
                     <option value="DB"> DB </option>
@@ -78,6 +84,12 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
 
             <input value={searchTerm} type='search' placeholder="name..." onChange={onSearch} />
             <button onClick={searchName}>Search</button>
+
+            <div>
+                <Link to="/createPokemon">
+                <button>Create pokemon</button>
+                </Link>
+            </div>
 
         </div>
     );

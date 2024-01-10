@@ -7,6 +7,7 @@ import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { allPokemons } from './redux/actions.js';
 import Detail from './components/detail/Detail.jsx';
+import CreatePokemon from './components/form/CreatePokemon.jsx'
 
 function App() {
   const { pokemons } = useSelector((state) => state);
@@ -37,6 +38,7 @@ function App() {
         <Route path='/' element={<LandingPage />} />
         <Route path='/home' element={<HomePage pokemons={pokemons}/>} />
         <Route path='/detail/:id' element={<Detail/>} />
+        <Route path='/createPokemon' element={<CreatePokemon/>} />
       </Routes>
     </div>
   );

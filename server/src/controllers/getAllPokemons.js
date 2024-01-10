@@ -1,8 +1,9 @@
 const axios = require("axios");
+const {Pokemon} = require('../db');
 
 const getAllPokemons = async (req, res) => {
     const URL = 'https://pokeapi.co/api/v2/pokemon';
-    const limit = 50; // Número de Pokémon por página
+    const limit = 60; // Número de Pokémon por página
     let allPokemonsData = [];
 
     try {
@@ -35,6 +36,10 @@ const getAllPokemons = async (req, res) => {
         }));
 
         allPokemonsData = [...allPokemonsData, ...pokemons];
+        
+        const dbPokemons = await Pokemon.findAll();
+        
+        allPokemonsData = [...allPokemonsData, ...dbPokemons];
 
         return res.status(200).json(allPokemonsData);
     } catch (error) {

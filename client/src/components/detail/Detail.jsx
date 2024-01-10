@@ -40,10 +40,10 @@ export default function Detail() {
                 {showInfo && (
                     <div className={style.info}>
                         <h2 className={style.name}>{pokemons.name}</h2>
-                        <p>Hp: {pokemons.stats && pokemons.stats.hp}</p>
-                        <p>Atack: {pokemons.stats && pokemons.stats.attack}</p>
-                        <p>Defense: {pokemons.stats && pokemons.stats.defense}</p>
-                        <p>Speed: {pokemons.stats && pokemons.stats.speed}</p>
+                        <p>Hp: {pokemons.stats && pokemons.stats.hp || pokemons.hp}</p>
+                        <p>Attack: {pokemons.stats && pokemons.stats.attack || pokemons.attack}</p>
+                        <p>Defense: {pokemons.stats && pokemons.stats.defense || pokemons.defense}</p>
+                        <p>Speed: {pokemons.stats && pokemons.stats.speed || pokemons.speed}</p>
                         <p>ID: {pokemons.id}</p>
                         <p>Height: {pokemons.height}</p>
                         <p>Weight: {pokemons.weight}</p>

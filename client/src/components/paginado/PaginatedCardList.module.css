@@ -1,7 +1,8 @@
 .cardList {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1px;
+    margin-top: 4rem;
 }
 
 
@@ -9,12 +10,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 16px;
-    position: fixed;
     bottom: 0;
-    left: 0;
     width: 100%;
-    padding: 8px;
+    padding: 1rem;
+    position: fixed;
 }
 
 .pagination button {
@@ -22,8 +21,9 @@
     color: white;
     border: none;
     margin: 0 8px;
-    padding: 8px 16px;
+    padding: 1rem 2rem;
     cursor: pointer;
+    font-size: 20px;
 }
 
 .pagination button:hover {
@@ -32,7 +32,7 @@
 
 .pagination span {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 25px;
     backdrop-filter: blur(5px);
     border-radius: 5%;
     padding: 5px;
@@ -40,11 +40,12 @@
 
 .buttonGoBack {
     position: absolute;
-    bottom: 574px;
-    left: 10px;
+    top: 1rem;
+    left: 1rem;
     background-color: #343a40;
     color: white;
     padding: 8px 16px;
+    font-size: 20px;
     border: none;
     border-radius: 4px;
     cursor: pointer;

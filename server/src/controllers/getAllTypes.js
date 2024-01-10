@@ -13,8 +13,7 @@ const getAllTypes = async (req, res) => {
             const { data } = await axios.get(nextUrl);
 
             const types = data.results.map(type => ({
-                name: type.name,
-                info: type.url,
+                name: type.name
             }));
 
             allTypes = [...allTypes, ...types];

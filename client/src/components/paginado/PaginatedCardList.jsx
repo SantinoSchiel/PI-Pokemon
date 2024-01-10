@@ -14,12 +14,11 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
         currentItems = pokemons;
     }
 
-
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const visibleItems = currentItems.slice(indexOfFirstItem, indexOfLastItem);
 
-    const totalPages = Math.ceil(pokemons.length / itemsPerPage);
+    const totalPages = Math.ceil(currentItems.length / itemsPerPage);
 
     const handlePrevClick = () => {
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -37,10 +36,14 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
         }
     }, [totalPages, currentPage]);
 
+    const goPageOne = () => {
+        setCurrentPage(1);
+    }
+
     return (
         <div className={style.cardContainer}>
             {currentItems === dataFromSearchBar && (
-                <button className={style.buttonGoBack} onClick={onGoBack} >
+                <button className={style.buttonGoBack} onClick={onGoBack}>
                     Go back
                 </button>
             )}
@@ -57,6 +60,9 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
             </div>
             {totalPagesToShow > 1 && (
                 <div className={style.pagination}>
+                    <button onClick={goPageOne}>
+                        Page 1
+                    </button>
                     <button onClick={handlePrevClick} disabled={currentPage === 1}>
                         Back
                     </button>
