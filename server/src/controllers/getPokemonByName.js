@@ -1,13 +1,13 @@
 const axios = require('axios');
 const { Op } = require('sequelize');
-const {Pokemon} = require('../db');
+const { Pokemon } = require('../db');
 
 const getPokemonByName = async (req, res) => {
     const { name } = req.query;
     const lowerCaseName = name.toLowerCase();
     const URL = 'https://pokeapi.co/api/v2/pokemon';
 
-    if (!lowerCaseName) {
+    if (!name) {
         return res.status(400).json({ message: 'name not provided' });
     }
 
@@ -21,17 +21,36 @@ const getPokemonByName = async (req, res) => {
         });
 
         if (dbPokemon) {
+            // Si existe en la base de datos, devolver el Pokémon encontrado
             return res.status(200).json(dbPokemon);
         }
 
+        // Si no existe en la base de datos, hacer la solicitud a la API externa
         const { data } = await axios.get(`${URL}/${lowerCaseName}`);
 
-        return res.status(200).json(data);
+        // Formatear la respuesta según el modelo de los otros endpoints
+        const formattedStats = {};
+        for (const stat of data.stats) {
+            const statName = stat.stat.name;
+            formattedStats[statName] = stat.base_stat;
+        }
 
+        const types = data.types.map(type => type.type.name);
+
+        const pokemon = {
+            id: data.id,
+            name: data.name,
+            image: data.sprites.other.dream_world.front_default,
+            stats: formattedStats,
+            height: data.height,
+            weight: data.weight,
+            types: types
+        };
+
+        return res.status(200).json(pokemon);
     } catch (error) {
-
+        console.error("Error en getPokemonByName:", error.stack);
         return res.status(500).send({ error: error.message });
-
     }
 };
 

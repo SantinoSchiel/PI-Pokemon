@@ -44,7 +44,7 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
         <div className={style.cardContainer}>
             {currentItems === dataFromSearchBar && (
                 <button className={style.buttonGoBack} onClick={onGoBack}>
-                    Go back
+                    Reset
                 </button>
             )}
             <div className={style.cardList}>

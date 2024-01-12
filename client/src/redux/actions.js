@@ -1,4 +1,4 @@
-import { ALL_POKEMONS, FILTER_TYPE, ORDER_APIORDB } from "./actions-types"
+import { ALL_POKEMONS, FILTER_TYPE, FILTER_APIORDB, ORDER_ALPHABETICALLY, ORDER_ATTACK ,CREATE_POKEMON } from "./actions-types"
 
 export const allPokemons = (pokemons) => {
    return {
@@ -14,9 +14,28 @@ export const filterType = (type) => {
    }
 }
 
-export const orderApiOrDb = (apiOrDb) => {
+export const filterApiOrDb = (apiOrDb) => {
    return {
-      type: ORDER_APIORDB,
+      type: FILTER_APIORDB,
       payload: apiOrDb
+   }
+}
+export const orderAlphabetically = (oreder) => {
+   return {
+      type: ORDER_ALPHABETICALLY,
+      payload: oreder
+   }
+}
+export const orderAttack = (oreder) => {
+   return {
+      type: ORDER_ATTACK,
+      payload: oreder
+   }
+}
+
+export const createPokemon = (infoPokemon) => {
+   return {
+      type: CREATE_POKEMON,
+      payload: infoPokemon
    }
 }

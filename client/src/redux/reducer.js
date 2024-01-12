@@ -1,10 +1,27 @@
-import { ALL_POKEMONS, FILTER_TYPE, ORDER_APIORDB } from "./actions-types"
+import { ALL_POKEMONS, FILTER_TYPE, FILTER_APIORDB, CREATE_POKEMON } from "./actions-types";
 
 const initialState = {
     pokemons: [],
-    allPokemons: []
-}
+    allPokemons: [],
+};
 
+const applyFilters = (allPokemons, filters) => {
+    const { type, apiOrDb } = filters;
+
+    let filteredPokemons = [...allPokemons];
+
+    if (type !== "All") {
+        filteredPokemons = filteredPokemons.filter((pokemon) => pokemon.types.includes(type));
+    }
+
+    if (apiOrDb === "DB") {
+        filteredPokemons = filteredPokemons.filter((pokemon) => pokemon.hp);
+    } else if (apiOrDb === "API") {
+        filteredPokemons = filteredPokemons.filter((pokemon) => pokemon.stats);
+    }
+
+    return filteredPokemons;
+};
 
 const reducer = (state = initialState, { type, payload }) => {
     switch (type) {
@@ -12,47 +29,29 @@ const reducer = (state = initialState, { type, payload }) => {
             return { ...state, pokemons: payload, allPokemons: payload };
         }
         case FILTER_TYPE: {
-            if (payload === "All") {
-                return {
-                    ...state,
-                    pokemons: state.allPokemons
-                }
-            }
+            const { allPokemons } = state;
+            const updatedState = { ...state, filters: { ...state.filters, type: payload } };
 
-            const filteredTypes = state.allPokemons.filter(pokemon => pokemon.types.includes(payload));
-
-            return{
-                ...state,
-                pokemons: filteredTypes
-            }
+            return { ...updatedState, pokemons: applyFilters(allPokemons, updatedState.filters) };
         }
-        case ORDER_APIORDB: {
-            if (payload === "All") {
-                return {
-                    ...state,
-                    pokemons: state.allPokemons
-                }
-            }
-            if (payload === "DB") {
-                const filteredOreder = state.allPokemons.filter(pokemon => pokemon.hp);
+        case FILTER_APIORDB: {
+            const { allPokemons } = state;
+            const updatedState = { ...state, filters: { ...state.filters, apiOrDb: payload } };
 
-                return{
-                    ...state,
-                    pokemons: filteredOreder
-                }
-            }
-            if (payload === "API") {
-                const filteredOreder = state.allPokemons.filter(pokemon => pokemon.stats);
+            return { ...updatedState, pokemons: applyFilters(allPokemons, updatedState.filters) };
+        }
+        case CREATE_POKEMON: {
+            const { pokemons, allPokemons } = state;
 
-                return{
-                    ...state,
-                    pokemons: filteredOreder
-                }
-            }
+            return {
+                ...state,
+                pokemons: [...pokemons, payload],
+                allPokemons: [...allPokemons, payload],
+            };
         }
         default:
-            return { ...state }
+            return { ...state };
     }
-}
+};
 
 export default reducer;

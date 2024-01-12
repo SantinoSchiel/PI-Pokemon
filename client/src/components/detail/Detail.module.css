@@ -10,10 +10,6 @@
     transition: transform 0.2s ease-in-out;
 }
 
-.card:hover {
-    transform: scale(1.05);
-}
-
 .imageContainer {
     position: relative;
     overflow: hidden;
@@ -28,7 +24,7 @@
 .info {
     position: absolute;
     top: 0;
-    left: 100%;
+    right:100%;
     margin-top: 14rem;
     padding: 3rem;
     font-size: x-large;
@@ -41,7 +37,7 @@
 
 .name {
     font-size: 2em;
-    color: #333;
+    color: #000000;
     margin: 0;
 }
 
@@ -61,23 +57,6 @@
 
 .goBackButton:hover {
     background-color: #6c757d;
-    /* Cambio de color al pasar el ratón */
     border-color: #0056b3;
-    /* Cambio de color del borde al pasar el ratón */
     color: #ffffff;
-    /* Cambio de color del texto al pasar el ratón */
-}
-
-.card.expanded .info {
-    max-height: 400px;
-    /* Altura máxima al expandir */
-}
-
-.card.expanded {
-    width: 500px;
-    /* Ancho ampliado */
-}
-
-.card:hover .info {
-    left: calc(100% + 8px);
 }

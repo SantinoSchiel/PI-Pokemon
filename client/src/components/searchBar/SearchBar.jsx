@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import style from './Search.module.css';
 import { useDispatch } from "react-redux";
-import { filterType, orderApiOrDb } from '../../redux/actions';
+import { filterType, filterApiOrDb } from '../../redux/actions';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
 
 
 function SearchBar({ pokemons, onDataFromSearchBar }) {
@@ -13,6 +14,15 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
 
     const [searchResults, setSearchResults] = useState([]);
 
+    const [typesOptions, setTypesOptions] = useState([]);
+
+    const [selectedApiOrDb, setSelectedApiOrDb] = useState(
+        localStorage.getItem('selectedApiOrDb') || 'All'
+    );
+
+    const [selectedType, setSelectedType] = useState(
+        localStorage.getItem('selectedType') || 'All'
+    );
 
     const onSearch = (event) => {
         const value = event.target.value;
@@ -24,12 +34,22 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
 
     const searchName = async () => {
 
-        const pokemonName = pokemons.filter(pokemon => pokemon.name === searchTerm)
+        try {
+            if (!searchTerm.trim()) {
+                window.alert('Por favor, ingrese un nombre de Pokémon válido.');
+                return;
+            }
 
-        if (pokemonName.length) {
-            setSearchResults(pokemonName);
-        } else {
-            window.alert(`There are no pokemons with the following name: ${searchTerm}`);
+            const pokemonName = pokemons.filter(pokemon => pokemon.name.toLowerCase() === searchTerm.toLowerCase())
+
+            if (!pokemonName.length) {
+                window.alert(`There are no visible pokemons with the following name: ${searchTerm}`);
+            } else {
+                const { data } = await axios.get(`http://localhost:3001/pokemons/name?name=${searchTerm}`);
+                setSearchResults([data]);
+            }
+        } catch (error) {
+            console.error('Error searching pokemon by name:', error.message);
         }
 
         setSearchTerm('');
@@ -40,45 +60,51 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
     }, [searchResults]);
 
     const handleFilter = event => {
-        dispatch(filterType(event.target.value))
+        const selectedValue = event.target.value;
+        dispatch(filterType(selectedValue));
+
+        setSelectedType(selectedValue);
+        localStorage.setItem('selectedType', selectedValue);
     }
 
-    const handleOrder = event => {
-        dispatch(orderApiOrDb(event.target.value))
+    const handleFilterDbOrApi = event => {
+        const selectedValue = event.target.value;
+        dispatch(filterApiOrDb(selectedValue));
+
+        setSelectedApiOrDb(selectedValue);
+        localStorage.setItem('selectedApiOrDb', selectedValue);
     }
+
+    useEffect(() => {
+        const fetchTypes = async () => {
+            try {
+                const { data } = await axios.get('http://localhost:3001/types');
+                setTypesOptions(data);
+            } catch (error) {
+                console.error('Error fetching types:', error.message);
+            }
+        };
+
+        fetchTypes();
+    }, []);
 
 
     return (
         <div className={style.container}>
 
             <div className={style.select}>
-                <select name="filterApiOrDb" onChange={handleOrder} >
+                <select name="filterApiOrDb" onChange={handleFilterDbOrApi} value={selectedApiOrDb} >
                     <option value="All"> All </option>
                     <option value="API"> API </option>
                     <option value="DB"> DB </option>
                 </select>
-                <select name="filterType" onChange={handleFilter}>
+                <select name="filterType" onChange={handleFilter} value={selectedType} >
                     <option value="All"> All </option>
-                    <option value="normal">normal</option>
-                    <option value="fighting">fighting</option>
-                    <option value="flying">flying</option>
-                    <option value="poison">poison</option>
-                    <option value="ground">ground</option>
-                    <option value="rock">rock</option>
-                    <option value="bug">bug</option>
-                    <option value="ghost">ghost</option>
-                    <option value="steel">steel</option>
-                    <option value="fire">fire</option>
-                    <option value="water">water</option>
-                    <option value="grass">grass</option>
-                    <option value="electric">electric</option>
-                    <option value="psychic">psychic</option>
-                    <option value="ice">ice</option>
-                    <option value="dragon">dragon</option>
-                    <option value="dark">dark</option>
-                    <option value="fairy">fairy</option>
-                    <option value="Unknow">Unknow</option>
-                    <option value="shadow">shadow</option>
+                    {typesOptions.map((type, index) => (
+                        <option key={index} value={type.name.toLowerCase()}>
+                            {type.name}
+                        </option>
+                    ))}
                 </select>
             </div>
 
@@ -87,7 +113,7 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
 
             <div>
                 <Link to="/createPokemon">
-                <button>Create pokemon</button>
+                    <button>Create pokemon</button>
                 </Link>
             </div>
 
