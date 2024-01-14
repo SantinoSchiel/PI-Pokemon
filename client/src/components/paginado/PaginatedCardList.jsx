@@ -17,6 +17,8 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
     const indexOfLastItem = currentPage * itemsPerPage;
     const indexOfFirstItem = indexOfLastItem - itemsPerPage;
     const visibleItems = currentItems.slice(indexOfFirstItem, indexOfLastItem);
+    // console.log('pokemons', pokemons)
+    // console.log('dataFromSearchBar', dataFromSearchBar)
 
     const totalPages = Math.ceil(currentItems.length / itemsPerPage);
 
@@ -36,15 +38,19 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
         }
     }, [totalPages, currentPage]);
 
-    const goPageOne = () => {
+    const goFirstPage = () => {
         setCurrentPage(1);
+    }
+
+    const goLastPage = () => {
+        setCurrentPage(totalPages)
     }
 
     return (
         <div className={style.cardContainer}>
             {currentItems === dataFromSearchBar && (
                 <button className={style.buttonGoBack} onClick={onGoBack}>
-                    Reset
+                    Back
                 </button>
             )}
             <div className={style.cardList}>
@@ -60,8 +66,8 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
             </div>
             {totalPagesToShow > 1 && (
                 <div className={style.pagination}>
-                    <button onClick={goPageOne}>
-                        Page 1
+                    <button onClick={goFirstPage}>
+                        First page
                     </button>
                     <button onClick={handlePrevClick} disabled={currentPage === 1}>
                         Back
@@ -69,6 +75,9 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
                     <span>{`Page ${currentPage} of ${totalPagesToShow}`}</span>
                     <button onClick={handleNextClick} disabled={currentPage === totalPages}>
                         Next
+                    </button>
+                    <button onClick={goLastPage}>
+                        Laste page
                     </button>
                 </div>
             )}

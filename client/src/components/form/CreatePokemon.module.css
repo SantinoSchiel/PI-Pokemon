@@ -1,11 +1,15 @@
 .form {
     max-width: 600px;
-    margin: 16px auto;
+    margin: 2px auto;
     padding: 20px;
     border: none;
     border-radius: 8px;
-    background-color: #8e8c8c;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #8e8c8cea;
+    box-shadow: 10px 10px 20px 5px rgb(0, 0, 0);
+}
+
+.form strong {
+    display: flex;
 }
 
 .formSection {
@@ -14,7 +18,7 @@
 
 .form label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 12px;
     font-weight: bold;
 }
 
@@ -70,10 +74,6 @@
 
 .form button.enabled:hover {
     background-color: #6c757d;
-}
-
-.errorMessage {
-    color: red;
 }
 
 .imageOptions {
@@ -183,5 +183,37 @@
 .cardList {
     position: absolute;
     top: 20rem;
-    left: 2 0rem;
+    left: 20rem;
+}
+
+.errors {
+    position: absolute;
+    top: 10rem;
+    right: 20rem;
+    border-radius: 5px;
+    padding: 1rem;
+    background-color: #8e8c8cd8;
+    box-shadow: 10px 10px 20px 5px rgb(0, 0, 0);
+}
+
+.errors strong {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+}
+
+.errors p {
+    color: rgb(255, 255, 255);
+    font-size: large;
+    font-weight: bold;
+    margin: 0;
+}
+
+.errors span {
+    display: flex;
+    font-weight: bold;
+    margin: 4px;
+    justify-content: center;
+    align-items: center;
 }

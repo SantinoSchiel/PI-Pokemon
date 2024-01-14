@@ -3,7 +3,7 @@ import style from './Card.module.css';
 import React, { useState } from "react";
 
 export default function Card(props) {
-    // console.log('esto es props', props)
+    // console.log('esto es props en Card', props)
 
     return (
         <div className={style.conteiner}>

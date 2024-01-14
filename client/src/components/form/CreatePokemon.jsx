@@ -41,37 +41,40 @@ export default function Form({ pokemons }) {
 
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
-        if (name === "types") {
-            const typesArray = value.split(',').map(type => type.trim());
-            setUserData((prevData) => ({
-                ...prevData,
-                [name]: typesArray,
-            }));
-        } else if (type === "checkbox") {
-            const randomUrl = pokemons.map((pokemon) => pokemon.image);
-            const randomIndex = Math.floor(Math.random() * randomUrl.length);
-            const randomImageUrl = randomUrl[randomIndex];
 
-            setUserData((prevData) => ({
-                ...prevData,
-                [name]: checked,
-                image: "", // Reiniciar la URL ingresada al seleccionar imagen aleatoria
-            }));
-        } else {
-            setUserData((prevData) => ({
-                ...prevData,
-                [name]: value,
-            }));
-        };
+        setUserData((prevData) => {
+            let updatedData;
 
-        setErrors(
-            Validation({
-                ...userData,
-                [name]: value
+            if (name === "types") {
+                const typesArray = value.split(',').map(type => type.trim());
+                updatedData = {
+                    ...prevData,
+                    [name]: typesArray,
+                };
+            } else if (type === "checkbox") {
+                const randomUrl = pokemons.map((pokemon) => pokemon.image);
+                const randomIndex = Math.floor(Math.random() * randomUrl.length);
+                const randomImageUrl = randomUrl[randomIndex];
+
+                updatedData = {
+                    ...prevData,
+                    [name]: checked,
+                    image: "",
+                };
+            } else {
+                updatedData = {
+                    ...prevData,
+                    [name]: value,
+                };
             }
-            )
-        );
+
+            return updatedData;
+        });
     };
+
+    useEffect(() => {
+        setErrors(Validation(userData));
+    }, [userData]);
 
     const handleSubmit = async (e) => {
 
@@ -114,9 +117,13 @@ export default function Form({ pokemons }) {
         }));
     };
 
-    const numberButtons = [25, 50, 100, 125, 150, 175, 200, 225, 255];
+    const numberButtons = [0, 25, 50, 100, 125, 150, 175, 200, 225, 255];
 
     const toggleType = (selectedType) => {
+        const validationErrors = Validation(userData);
+        setErrors(validationErrors);
+
+
         setUserData((prevData) => {
             const updatedTypes = prevData.types.includes(selectedType)
                 ? prevData.types.filter(type => type !== selectedType)
@@ -127,6 +134,8 @@ export default function Form({ pokemons }) {
                 types: updatedTypes,
             };
         });
+        // console.log(userData.types)
+        console.log('userData', userData)
     };
 
     useEffect(() => {
@@ -142,7 +151,7 @@ export default function Form({ pokemons }) {
         };
 
         fetchTypes();
-    }, []);
+    }, []);    
 
     return (
         <div className={style.form}>
@@ -192,15 +201,6 @@ export default function Form({ pokemons }) {
                         </div>
                         {!userData.randomImage ? (
                             <>
-                                {userData.image && (
-                                    <div>
-                                        <img
-                                            src={userData.image}
-                                            alt="Custom Pokemon"
-                                            className={style.urlEntered}
-                                        />
-                                    </div>
-                                )}
                                 <input
                                     type="text"
                                     value={userData.image}
@@ -219,7 +219,6 @@ export default function Form({ pokemons }) {
                                 />
                             </div>
                         )}
-                        <p className={style.errorMessage}>{error.image}</p>
                     </label>
                 </div>
 
@@ -249,7 +248,6 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
-                    <p><strong></strong></p>
 
                     <label>
                         <strong>Attack: </strong>
@@ -275,8 +273,6 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
-                    <p><strong></strong></p>
-
 
 
                     <label>
@@ -303,7 +299,6 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
-                    <p><strong></strong></p>
 
                     <label>
                         <strong>Speed: </strong>
@@ -329,7 +324,6 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
-                    <p><strong></strong></p>
 
 
 
@@ -359,7 +353,7 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
-                    <p><strong></strong></p>
+
 
                     <label>
                         <strong>Weight: </strong>
@@ -385,7 +379,7 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
-                    <p><strong></strong></p>
+
                 </div>
 
 
@@ -404,7 +398,6 @@ export default function Form({ pokemons }) {
                         </button>
                     ))}
                 </div>
-                <p><strong></strong></p>
 
 
                 <button
@@ -412,9 +405,22 @@ export default function Form({ pokemons }) {
                     disabled={Object.values(error).some((err) => err)}
                     className={`${style.button} ${Object.values(error).some((err) => err) ? '' : style.enabled}`}
                 >
-                    <strong>Create Pokemon</strong>
+                    <p>Create Pokemon</p>
                 </button>
             </form>
+
+            <div className={style.errors}>
+                <strong>Requirements</strong>
+                <span>Name: </span><p>{error.name ? error.name : 'all good!'}</p>
+                <span>Image: </span><p>{error.image ? error.image : 'all good!'}</p>
+                <span>Hp: </span><p>{error.hp ? error.hp : 'all good!'}</p>
+                <span>Attack: </span><p>{error.attack ? error.attack : 'all good!'}</p>
+                <span>Defense: </span><p>{error.defense ? error.defense : 'all good!'}</p>
+                <span>Speed: </span><p>{error.speed ? error.speed : 'all good!'}</p>
+                <span>Height: </span><p>{error.height ? error.height : 'all good!'}</p>
+                <span>Weight: </span><p>{error.weight ? error.weight : 'all good!'}</p>
+                <span>Types: </span><p>{error.types ? error.types : 'all good!'}</p>
+            </div>
 
         </div>
     );

@@ -12,7 +12,7 @@ const getPokemonByName = async (req, res) => {
     }
 
     try {
-        const dbPokemon = await Pokemon.findOne({
+        const dbPokemon = await Pokemon.findAll({
             where: {
                 name: {
                     [Op.iLike]: lowerCaseName
@@ -20,9 +20,17 @@ const getPokemonByName = async (req, res) => {
             }
         });
 
-        if (dbPokemon) {
-            // Si existe en la base de datos, devolver el Pokémon encontrado
-            return res.status(200).json(dbPokemon);
+        if (dbPokemon.length > 0) {
+            const formattedDbPokemons = dbPokemon.map(dbPokemon => ({
+                id: dbPokemon.id,
+                name: dbPokemon.name,
+                image: dbPokemon.image,
+                stats: dbPokemon.stats,
+                height: dbPokemon.height,
+                weight: dbPokemon.weight,
+                types: dbPokemon.types
+            }));
+            return res.status(200).json(formattedDbPokemons);
         }
 
         // Si no existe en la base de datos, hacer la solicitud a la API externa

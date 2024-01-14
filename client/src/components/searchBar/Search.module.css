@@ -20,6 +20,17 @@
     background-color: #6c757d;
 }
 
+.select strong {
+    font-size: 18px;
+    font-weight: normal;
+    background-color: #343a4080;
+    color: white;
+    padding: 10px;
+    border-radius: 8px;
+    border: solid 1px;
+    border-color: white;
+}
+
 input {
     padding: 12px;
     margin-right: 8px;

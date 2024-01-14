@@ -25,15 +25,17 @@ export default function Detail() {
 
     return (
         <div className={style.cardContainer}>
+
             <Link to="/home" className={style.goBackButton}>
                 Go Back
             </Link>
+
             <div className={style.card}>
-                <div className={style.imageContainer}>
-                    <img src={pokemons.image} alt={pokemons.name} className={style.image} />
-                </div>
 
                 <div className={style.info}>
+                    <div className={style.imageContainer}>
+                        <img src={pokemons.image} alt={pokemons.name} className={style.image} />
+                    </div>
                     <h2 className={style.name}>{pokemons.name}</h2>
                     <p>Hp: {pokemons.stats && pokemons.stats.hp || pokemons.hp}</p>
                     <p>Attack: {pokemons.stats && pokemons.stats.attack || pokemons.attack}</p>

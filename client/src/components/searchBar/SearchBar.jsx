@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import style from './Search.module.css';
 import { useDispatch } from "react-redux";
-import { filterType, filterApiOrDb } from '../../redux/actions';
+import { filterType, filterApiOrDb, orderAlphabetically, orderAttack } from '../../redux/actions';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -22,6 +22,14 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
 
     const [selectedType, setSelectedType] = useState(
         localStorage.getItem('selectedType') || 'All'
+    );
+
+    const [selectedOrder, setSelectedOrder] = useState(
+        localStorage.getItem('selectedOrder') || 'DefaultAlphabetical'
+    );
+
+    const [selectedOrderAttack, setSelectedOrderAttack] = useState(
+        localStorage.getItem('selectedOrderAttack') || 'DefaultAttack'
     );
 
     const onSearch = (event) => {
@@ -45,8 +53,14 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
             if (!pokemonName.length) {
                 window.alert(`There are no visible pokemons with the following name: ${searchTerm}`);
             } else {
+
                 const { data } = await axios.get(`http://localhost:3001/pokemons/name?name=${searchTerm}`);
-                setSearchResults([data]);
+
+                if (data.stats) {
+                    setSearchResults([data]);
+                } else {
+                    setSearchResults(data);
+                }
             }
         } catch (error) {
             console.error('Error searching pokemon by name:', error.message);
@@ -75,6 +89,22 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
         localStorage.setItem('selectedApiOrDb', selectedValue);
     }
 
+    const handleOrderAlphabetical = event => {
+        const selectedValue = event.target.value;
+        dispatch(orderAlphabetically(selectedValue))
+        
+        setSelectedOrder(selectedValue);
+        localStorage.setItem('selectedOrder', selectedValue);
+    }
+
+    const handleOrderAttack = event => {
+        const selectedValue = event.target.value;
+        dispatch(orderAttack(selectedValue));
+
+        setSelectedOrderAttack(selectedValue);
+        localStorage.setItem('selectedOrderAttack', selectedValue);
+    }
+
     useEffect(() => {
         const fetchTypes = async () => {
             try {
@@ -93,11 +123,29 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
         <div className={style.container}>
 
             <div className={style.select}>
+
+                <strong>Alphabetically:</strong>
+                <select name="orderAlphabetical" onChange={handleOrderAlphabetical} value={selectedOrder}>
+                    <option value="DefaultAlphabetical"> Default </option>
+                    <option value="GrowingAlphabetical"> Growing </option>
+                    <option value="DecreasingAlphabetical"> Decreasing </option>
+                </select>
+
+                <strong>Attack:</strong>
+                <select name="orderAttack" onChange={handleOrderAttack} value={selectedOrderAttack}>
+                    <option value="DefaultAttack"> Default </option>
+                    <option value="GrowingAttack"> Growing </option>
+                    <option value="DecreasingAttack"> Decreasing </option>
+                </select>
+
+                <strong>ApiOrDb:</strong>
                 <select name="filterApiOrDb" onChange={handleFilterDbOrApi} value={selectedApiOrDb} >
                     <option value="All"> All </option>
                     <option value="API"> API </option>
                     <option value="DB"> DB </option>
                 </select>
+
+                <strong>Types:</strong>
                 <select name="filterType" onChange={handleFilter} value={selectedType} >
                     <option value="All"> All </option>
                     {typesOptions.map((type, index) => (
