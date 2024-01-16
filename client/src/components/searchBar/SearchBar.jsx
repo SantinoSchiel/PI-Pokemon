@@ -43,11 +43,6 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
     const searchName = async () => {
 
         try {
-            if (!searchTerm.trim()) {
-                window.alert('Por favor, ingrese un nombre de Pokémon válido.');
-                return;
-            }
-
             const pokemonName = pokemons.filter(pokemon => pokemon.name.toLowerCase() === searchTerm.toLowerCase())
 
             if (!pokemonName.length) {

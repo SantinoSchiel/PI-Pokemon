@@ -3,11 +3,11 @@ const {Pokemon} = require('../db');
 
 const getAllPokemons = async (req, res) => {
     const URL = 'https://pokeapi.co/api/v2/pokemon';
-    const limit = 156; // Número de Pokémon por página
+    const limit = 156;
     let allPokemonsData = [];
 
     try {
-        const page = req.query.page || 1; // Obtener el número de página desde los parámetros de consulta
+        const page = req.query.page || 1;
         const offset = (page - 1) * limit;
         const nextUrl = `${URL}?limit=${limit}&offset=${offset}`;
 

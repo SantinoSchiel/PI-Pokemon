@@ -55,3 +55,18 @@
 .buttonGoBack:hover {
     background-color: #457b9d;
 }
+
+.select {
+    background-color: #343a40;
+    color: white;
+    border: none;
+    margin: 0 8px;
+    padding: 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.select:hover {
+    background-color: #6c757d;
+}

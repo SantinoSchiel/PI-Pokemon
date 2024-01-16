@@ -5,7 +5,7 @@ import style from './PaginatedCardList.module.css';
 const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
     const itemsPerPage = 12;
     const [currentPage, setCurrentPage] = useState(1);
-    const [loading, setLoading] = useState(false);
+    //const [loading, setLoading] = useState(false);
     let currentItems = [];
 
     if (dataFromSearchBar.length > 0) {
@@ -46,6 +46,18 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
         setCurrentPage(totalPages)
     }
 
+    const renderPageOptions = () => {
+        const options = [];
+        for (let i = 1; i <= totalPages; i++) {
+            options.push(
+                <option key={i} value={i}>
+                    {i}
+                </option>
+            );
+        }
+        return options;
+    };
+
     return (
         <div className={style.cardContainer}>
             {currentItems === dataFromSearchBar && (
@@ -66,22 +78,25 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
             </div>
             {totalPagesToShow > 1 && (
                 <div className={style.pagination}>
-                    <button onClick={goFirstPage}>
+                    <select className={style.select} value={currentPage} onChange={(e) => setCurrentPage(parseInt(e.target.value))}>
+                        {renderPageOptions()}
+                    </select>
+                    {/* <button onClick={goFirstPage}>
                         First page
-                    </button>
-                    <button onClick={handlePrevClick} disabled={currentPage === 1}>
+                    </button> */}
+                    <button onClick={handlePrevClick} disabled={currentPage === 1}> 
                         Back
                     </button>
                     <span>{`Page ${currentPage} of ${totalPagesToShow}`}</span>
                     <button onClick={handleNextClick} disabled={currentPage === totalPages}>
                         Next
                     </button>
-                    <button onClick={goLastPage}>
+                    {/* <button onClick={goLastPage}>
                         Laste page
-                    </button>
+                    </button> */}
                 </div>
             )}
-            {loading && <p>Loading...</p>}
+            {/* {loading && <p>Loading...</p>} */}
         </div>
     );
 };

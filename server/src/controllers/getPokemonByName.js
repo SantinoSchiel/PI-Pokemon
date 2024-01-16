@@ -33,10 +33,8 @@ const getPokemonByName = async (req, res) => {
             return res.status(200).json(formattedDbPokemons);
         }
 
-        // Si no existe en la base de datos, hacer la solicitud a la API externa
         const { data } = await axios.get(`${URL}/${lowerCaseName}`);
 
-        // Formatear la respuesta según el modelo de los otros endpoints
         const formattedStats = {};
         for (const stat of data.stats) {
             const statName = stat.stat.name;

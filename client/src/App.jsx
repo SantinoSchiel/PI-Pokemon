@@ -2,7 +2,7 @@ import './App.css';
 import { Routes, Route } from 'react-router-dom';
 import LandingPage from './components/landingPage/landingPage.jsx';
 import HomePage from './components/homePage/homePage.jsx';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { allPokemons } from './redux/actions.js';
