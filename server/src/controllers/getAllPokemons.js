@@ -9,9 +9,9 @@ const getAllPokemons = async (req, res) => {
     try {
         const page = req.query.page || 1;
         const offset = (page - 1) * limit;
-        const nextUrl = `${URL}?limit=${limit}&offset=${offset}`;
+        const newUrl = `${URL}?limit=${limit}&offset=${offset}`;
 
-        const { data } = await axios.get(nextUrl);
+        const { data } = await axios.get(newUrl);
 
         const pokemons = await Promise.all(data.results.map(async (pokemon) => {
             const { data: pokemonData } = await axios.get(pokemon.url);

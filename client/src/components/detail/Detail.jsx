@@ -1,33 +1,27 @@
 import axios from "axios";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import style from './Detail.module.css';
 
 export default function Detail() {
     const { id } = useParams();
-    const navigate = useNavigate();
 
     const [pokemon, setPokemon] = useState([]);
 
     useEffect(() => {
         axios(`http://localhost:3001/pokemons/${id}`).then(
             ({ data }) => {
-                if (data.name) {
-                    setPokemon(data);
-                } else {
-                    window.alert('No hay personajes con ese ID');
-                    navigate(-1);
-                }
+                setPokemon(data);
             }
         );
         return setPokemon({});
-    }, [id, navigate]);
+    }, [id]);
 
     return (
         <div className={style.cardContainer}>
 
             <Link to="/home" className={style.goBackButton}>
-                Go Back
+                Go Home
             </Link>
 
             <div className={style.card}>

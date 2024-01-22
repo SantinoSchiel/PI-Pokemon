@@ -6,7 +6,7 @@ function LandingPage() {
     return (
       <div className={style.container}>
         <NavLink to={'/home'} >
-        <button className={style.button}>Ingresar!</button>
+        <button className={style.button}>Join!</button>
         </NavLink>
       </div>
     );
