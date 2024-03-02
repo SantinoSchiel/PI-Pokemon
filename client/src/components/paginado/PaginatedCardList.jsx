@@ -5,7 +5,6 @@ import style from './PaginatedCardList.module.css';
 const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
     const itemsPerPage = 12;
     const [currentPage, setCurrentPage] = useState(1);
-    //const [loading, setLoading] = useState(false);
     let currentItems = [];
 
     if (dataFromSearchBar.length > 0) {
@@ -14,13 +13,37 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
         currentItems = pokemons;
     }
 
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const visibleItems = currentItems.slice(indexOfFirstItem, indexOfLastItem);
-    // console.log('pokemons', pokemons)
-    // console.log('dataFromSearchBar', dataFromSearchBar)
-
     const totalPages = Math.ceil(currentItems.length / itemsPerPage);
+    const maxButtonsToShow = 4;
+    const halfMaxButtonsToShow = Math.floor(maxButtonsToShow / 2);
+
+    const renderPageButtons = () => {
+        const buttons = [];
+        let startPage = Math.max(1, currentPage - halfMaxButtonsToShow);
+        let endPage = Math.min(totalPages, startPage + maxButtonsToShow - 1);
+
+        if (totalPages <= maxButtonsToShow) {
+            startPage = 1;
+            endPage = totalPages;
+        } else if (currentPage <= halfMaxButtonsToShow) {
+            endPage = maxButtonsToShow;
+        } else if (currentPage >= totalPages - halfMaxButtonsToShow) {
+            startPage = totalPages - maxButtonsToShow + 1;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            buttons.push(
+                <button
+                    key={i}
+                    className={currentPage === i ? `${style.pageButton} ${style.currentPage}` : style.pageButton}
+                    onClick={() => setCurrentPage(i)}
+                >
+                    {i}
+                </button>
+            );
+        }
+        return buttons;
+    };
 
     const handlePrevClick = () => {
         setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
@@ -30,41 +53,10 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
         setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
     };
 
-    const totalPagesToShow = currentItems === dataFromSearchBar ? 1 : totalPages;
-
-    useEffect(() => {
-        if (totalPages > 0 && currentPage > totalPages) {
-            setCurrentPage(1);
-        }
-    }, [totalPages, currentPage]);
-
-    // const goFirstPage = () => {
-    //     setCurrentPage(1);
-    // }
-
-    // const goLastPage = () => {
-    //     setCurrentPage(totalPages)
-    // }
-
-    const renderPageOptions = () => {
-        const options = [];
-        for (let i = 1; i <= totalPages; i++) {
-            options.push(
-                <option key={i} value={i}>
-                    {i}
-                </option>
-            );
-        }
-        return options;
-    };
+    const visibleItems = currentItems.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
     return (
         <div className={style.cardContainer}>
-            {currentItems === dataFromSearchBar && (
-                <button className={style.buttonGoBack} onClick={onGoBack}>
-                    Back
-                </button>
-            )}
             <div className={style.cardList}>
                 {visibleItems.map(pokemon => (
                     <Card
@@ -77,33 +69,17 @@ const PaginatedCardList = ({ pokemons, dataFromSearchBar, onGoBack }) => {
                 ))}
             </div>
 
-            {totalPagesToShow > 1 && (
+            {totalPages > 1 && (
                 <div className={style.pagination}>
-
-                    <select className={style.select} value={currentPage} onChange={(e) => setCurrentPage(parseInt(e.target.value))}>
-                        {renderPageOptions()}
-                    </select>
-
-                    {/* <button onClick={goFirstPage}>
-                        First page
-                    </button> */}
-
-                    <button onClick={handlePrevClick} disabled={currentPage === 1}> 
-                        Back
+                    <button onClick={handlePrevClick} disabled={currentPage === 1}>
+                        Prev
                     </button>
-
-                    <span>{`Page ${currentPage} of ${totalPagesToShow}`}</span>
-
+                    {renderPageButtons()}
                     <button onClick={handleNextClick} disabled={currentPage === totalPages}>
                         Next
                     </button>
-                    
-                    {/* <button onClick={goLastPage}>
-                        Laste page
-                    </button> */}
                 </div>
             )}
-            {/* {loading && <p>Loading...</p>} */}
         </div>
     );
 };

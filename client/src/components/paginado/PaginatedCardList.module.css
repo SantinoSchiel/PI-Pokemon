@@ -2,7 +2,7 @@
     display: grid;
     grid-template-columns: repeat(6, 1fr);
     gap: 1px;
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 
 
@@ -69,4 +69,9 @@
 
 .select:hover {
     background-color: #6c757d;
+}
+
+.pagination button.currentPage {
+    background-color: #6c757d; /* Cambia este color al que desees */
+    color: white; /* Cambia el color del texto si es necesario */
 }

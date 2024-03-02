@@ -5,64 +5,28 @@ import { filterType, filterApiOrDb, orderAlphabetically, orderAttack } from '../
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 
-
 function SearchBar({ pokemons, onDataFromSearchBar }) {
-
     const dispatch = useDispatch();
 
     const [searchTerm, setSearchTerm] = useState('');
-
     const [searchResults, setSearchResults] = useState([]);
-
     const [typesOptions, setTypesOptions] = useState([]);
-
-    const [selectedApiOrDb, setSelectedApiOrDb] = useState(
-        localStorage.getItem('selectedApiOrDb') || 'All'
-    );
-
-    const [selectedType, setSelectedType] = useState(
-        localStorage.getItem('selectedType') || 'All'
-    );
-
-    const [selectedOrder, setSelectedOrder] = useState(
-        localStorage.getItem('selectedOrder') || 'DefaultAlphabetical'
-    );
-
-    const [selectedOrderAttack, setSelectedOrderAttack] = useState(
-        localStorage.getItem('selectedOrderAttack') || 'DefaultAttack'
-    );
+    const [selectedApiOrDb, setSelectedApiOrDb] = useState(localStorage.getItem('selectedApiOrDb') || 'All');
+    const [selectedType, setSelectedType] = useState(localStorage.getItem('selectedType') || 'All');
+    const [selectedOrder, setSelectedOrder] = useState(localStorage.getItem('selectedOrder') || 'DefaultAlphabetical');
+    const [selectedOrderAttack, setSelectedOrderAttack] = useState(localStorage.getItem('selectedOrderAttack') || 'DefaultAttack');
 
     const onSearch = (event) => {
         const value = event.target.value;
-
         setSearchTerm(value);
     };
 
-
-
-    const searchName = async () => {
-
-        try {
-            const pokemonName = pokemons.filter(pokemon => pokemon.name.toLowerCase() === searchTerm.toLowerCase())
-
-            if (!pokemonName.length) {
-                window.alert(`There are no visible pokemons with the following name: ${searchTerm}`);
-            } else {
-
-                const { data } = await axios.get(`http://localhost:3001/pokemons/name?name=${searchTerm}`);
-
-                if (data.stats) {
-                    setSearchResults([data]);
-                } else {
-                    setSearchResults(data);
-                }
-            }
-        } catch (error) {
-            console.error('Error searching pokemon by name:', error.message);
-        }
-
-        setSearchTerm('');
-    }
+    useEffect(() => {
+        const results = pokemons.filter(pokemon =>
+            pokemon.name.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setSearchResults(results);
+    }, [searchTerm, pokemons]);
 
     useEffect(() => {
         onDataFromSearchBar(searchResults);
@@ -113,53 +77,50 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
         fetchTypes();
     }, []);
 
-
     return (
         <div className={style.container}>
+            <div className={style.filterContainer}>
+                <div className={style.select}>
+                    <strong>Alphabetically:</strong>
+                    <select name="orderAlphabetical" onChange={handleOrderAlphabetical} value={selectedOrder}>
+                        <option value="DefaultAlphabetical"> Default </option>
+                        <option value="GrowingAlphabetical"> Growing </option>
+                        <option value="DecreasingAlphabetical"> Decreasing </option>
+                    </select>
 
-            <div className={style.select}>
+                    <strong>Attack:</strong>
+                    <select name="orderAttack" onChange={handleOrderAttack} value={selectedOrderAttack}>
+                        <option value="DefaultAttack"> Default </option>
+                        <option value="GrowingAttack"> Growing </option>
+                        <option value="DecreasingAttack"> Decreasing </option>
+                    </select>
 
-                <strong>Alphabetically:</strong>
-                <select name="orderAlphabetical" onChange={handleOrderAlphabetical} value={selectedOrder}>
-                    <option value="DefaultAlphabetical"> Default </option>
-                    <option value="GrowingAlphabetical"> Growing </option>
-                    <option value="DecreasingAlphabetical"> Decreasing </option>
-                </select>
+                    <strong>Api/Db:</strong>
+                    <select name="filterApiOrDb" onChange={handleFilterDbOrApi} value={selectedApiOrDb} >
+                        <option value="All"> All </option>
+                        <option value="API"> API </option>
+                        <option value="DB"> DB </option>
+                    </select>
 
-                <strong>Attack:</strong>
-                <select name="orderAttack" onChange={handleOrderAttack} value={selectedOrderAttack}>
-                    <option value="DefaultAttack"> Default </option>
-                    <option value="GrowingAttack"> Growing </option>
-                    <option value="DecreasingAttack"> Decreasing </option>
-                </select>
-
-                <strong>ApiOrDb:</strong>
-                <select name="filterApiOrDb" onChange={handleFilterDbOrApi} value={selectedApiOrDb} >
-                    <option value="All"> All </option>
-                    <option value="API"> API </option>
-                    <option value="DB"> DB </option>
-                </select>
-
-                <strong>Types:</strong>
-                <select name="filterType" onChange={handleFilter} value={selectedType} >
-                    <option value="All"> All </option>
-                    {typesOptions.map((type, index) => (
-                        <option key={index} value={type.name.toLowerCase()}>
-                            {type.name}
-                        </option>
-                    ))}
-                </select>
+                    <strong>Types:</strong>
+                    <select name="filterType" onChange={handleFilter} value={selectedType} >
+                        <option value="All"> All </option>
+                        {typesOptions.map((type, index) => (
+                            <option key={index} value={type.name.toLowerCase()}>
+                                {type.name}
+                            </option>
+                        ))}
+                    </select>
+                </div>
             </div>
 
             <input value={searchTerm} type='search' placeholder="name..." onChange={onSearch} />
-            <button onClick={searchName}>Search</button>
 
             <div>
                 <Link to="/createPokemon">
                     <button>Create pokemon</button>
                 </Link>
             </div>
-
         </div>
     );
 }

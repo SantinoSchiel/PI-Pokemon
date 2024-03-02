@@ -52,7 +52,13 @@
 
 .subtitle {
     margin: 1rem;
-    padding: 0;
-    font-size: 2rem;
-    color: #000000;
+    color: white;
+    background-color: #8e8c8c5f;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 8px;
+    border: solid;
+    border-color: white;
+    border-width: 2px;
+    font-size: large;
 }

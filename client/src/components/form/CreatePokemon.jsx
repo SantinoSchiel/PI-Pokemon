@@ -151,7 +151,7 @@ export default function Form({ pokemons }) {
         };
 
         fetchTypes();
-    }, []);    
+    }, []);
 
     return (
         <div className={style.form}>
@@ -160,7 +160,7 @@ export default function Form({ pokemons }) {
             </Link>
 
             <div className={style.cardList}>
-                {lastCreatedPokemon && (
+                {lastCreatedPokemon ? (
                     <Card
                         key={lastCreatedPokemon.id}
                         id={lastCreatedPokemon.id}
@@ -168,6 +168,8 @@ export default function Form({ pokemons }) {
                         image={lastCreatedPokemon.image}
                         types={lastCreatedPokemon.types}
                     />
+                ) : (
+                    <p>Your card will appear here!</p>
                 )}
             </div>
 
@@ -324,11 +326,14 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
+                </div>
+            </form>
 
 
 
 
-
+            <form onSubmit={handleSubmit}>
+                <div className={style.formSection}>
                     <label>
                         <strong>Height: </strong>
                     </label>
@@ -353,7 +358,6 @@ export default function Form({ pokemons }) {
                             ))}
                         </div>
                     </div>
-
 
                     <label>
                         <strong>Weight: </strong>
@@ -380,47 +384,44 @@ export default function Form({ pokemons }) {
                         </div>
                     </div>
 
+                    <label><strong>Types: </strong></label>
+                    <div>
+                        {typesOptions.map((type, index) => (
+                            <button
+                                key={index}
+                                type="button"
+                                value={type.toLowerCase()}
+                                className={`${userData.types.includes(type) ? style.checked : ''}`}
+                                onClick={() => toggleType(type)}
+                            >
+                                {type}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
-
-
-                <label><strong>Types: </strong></label>
-                <div>
-                    {typesOptions.map((type, index) => (
+                <div className={style.errors}>
+                    <strong>Requirements</strong>
+                    <span>Name: </span><p>{error.name ? error.name : 'all good!'}</p>
+                    <span>Image: </span><p>{error.image ? error.image : 'all good!'}</p>
+                    <span>Hp: </span><p>{error.hp ? error.hp : 'all good!'}</p>
+                    <span>Attack: </span><p>{error.attack ? error.attack : 'all good!'}</p>
+                    <span>Defense: </span><p>{error.defense ? error.defense : 'all good!'}</p>
+                    <span>Speed: </span><p>{error.speed ? error.speed : 'all good!'}</p>
+                    <span>Height: </span><p>{error.height ? error.height : 'all good!'}</p>
+                    <span>Weight: </span><p>{error.weight ? error.weight : 'all good!'}</p>
+                    <span>Types: </span><p>{error.types ? error.types : 'all good!'}</p>
+                    <div className={style.formSection}>
                         <button
-                            key={index}
-                            type="button"
-                            value={type.toLowerCase()}
-                            className={`${userData.types.includes(type) ? style.checked : ''}`}
-                            onClick={() => toggleType(type)}
+                            type="submit"
+                            disabled={Object.values(error).some((err) => err)}
+                            className={`${style.button} ${Object.values(error).some((err) => err) ? '' : style.enabled}`}
                         >
-                            {type}
+                            <p>Create Pokemon</p>
                         </button>
-                    ))}
+                    </div>
                 </div>
-
-
-                <button
-                    type="submit"
-                    disabled={Object.values(error).some((err) => err)}
-                    className={`${style.button} ${Object.values(error).some((err) => err) ? '' : style.enabled}`}
-                >
-                    <p>Create Pokemon</p>
-                </button>
             </form>
-
-            <div className={style.errors}>
-                <strong>Requirements</strong>
-                <span>Name: </span><p>{error.name ? error.name : 'all good!'}</p>
-                <span>Image: </span><p>{error.image ? error.image : 'all good!'}</p>
-                <span>Hp: </span><p>{error.hp ? error.hp : 'all good!'}</p>
-                <span>Attack: </span><p>{error.attack ? error.attack : 'all good!'}</p>
-                <span>Defense: </span><p>{error.defense ? error.defense : 'all good!'}</p>
-                <span>Speed: </span><p>{error.speed ? error.speed : 'all good!'}</p>
-                <span>Height: </span><p>{error.height ? error.height : 'all good!'}</p>
-                <span>Weight: </span><p>{error.weight ? error.weight : 'all good!'}</p>
-                <span>Types: </span><p>{error.types ? error.types : 'all good!'}</p>
-            </div>
 
         </div>
     );
