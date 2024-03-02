@@ -38,6 +38,7 @@ const getAllPokemons = async (req, res) => {
         allPokemonsData = [...allPokemonsData, ...pokemons];
         
         const dbPokemons = await Pokemon.findAll();
+        console.log(dbPokemons, 'dbPokemons');
         
         allPokemonsData = [...allPokemonsData, ...dbPokemons];
 

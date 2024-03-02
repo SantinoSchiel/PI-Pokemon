@@ -18,7 +18,10 @@ function App() {
     const Pokemons = async () => {
       const URL = "http://localhost:3001/pokemons";
       try {
+        console.log("entrando al axios");
+        console.log("URL:", URL);
         const { data } = await axios.get(URL);
+        console.log("axios correcto");
 
         if (data) {
           dispatch(allPokemons(data));
