@@ -16,7 +16,7 @@
 }
 
 .formSection {
-    margin-bottom: 20px;
+    margin-top: 15px;
 }
 
 .form label {
@@ -106,7 +106,7 @@
     max-width: 8%;
     max-height: 8%;
     position: fixed;
-    top: 6rem;
+    top: 7rem;
     right: 60rem;
 }
 
