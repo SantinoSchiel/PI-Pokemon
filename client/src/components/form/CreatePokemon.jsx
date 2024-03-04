@@ -141,7 +141,7 @@ export default function Form({ pokemons }) {
     useEffect(() => {
         const fetchTypes = async () => {
             try {
-                const { data } = await axios.get('http://localhost:3001/types');
+                const { data } = await axios.get('/types');
                 const arrayTypes = data.map(names => names.name)
                 setTypesOptions(arrayTypes);
                 // console.log(typesOptions)
