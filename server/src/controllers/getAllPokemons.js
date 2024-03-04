@@ -3,7 +3,7 @@ const {Pokemon} = require('../db');
 
 const getAllPokemons = async (req, res) => {
     const URL = 'https://pokeapi.co/api/v2/pokemon';
-    const limit = 156;
+    const limit = 30;
     let allPokemonsData = [];
 
     try {
