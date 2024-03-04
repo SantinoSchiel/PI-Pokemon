@@ -4,6 +4,7 @@ import LandingPage from './components/landingPage/landingPage.jsx';
 import HomePage from './components/homePage/homePage.jsx';
 import { useEffect } from 'react';
 import axios from 'axios';
+axios.defaults.baseURL = 'http://localhost:3001';
 import { useDispatch, useSelector } from 'react-redux';
 import { allPokemons } from './redux/actions.js';
 import Detail from './components/detail/Detail.jsx';
@@ -16,7 +17,7 @@ function App() {
 
   useEffect(() => {
     const Pokemons = async () => {
-      const URL = "http://localhost:3001/pokemons";
+      const URL = "/pokemons";
       try {
         console.log("entrando al axios");
         console.log("URL:", URL);

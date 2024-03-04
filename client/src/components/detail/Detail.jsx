@@ -9,7 +9,7 @@ export default function Detail() {
     const [pokemon, setPokemon] = useState([]);
 
     useEffect(() => {
-        axios(`http://localhost:3001/pokemons/${id}`).then(
+        axios(`/pokemons/${id}`).then(
             ({ data }) => {
                 setPokemon(data);
             }

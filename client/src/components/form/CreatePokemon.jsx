@@ -86,7 +86,7 @@ export default function Form({ pokemons }) {
 
         if (Object.keys(validationErrors).length === 0) {
             try {
-                const response = await axios.post("http://localhost:3001/pokemons", userData);
+                const response = await axios.post("/pokemons", userData);
                 const newPokemon = response.data;
                 dispatch(createPokemon(newPokemon));
                 setLastCreatedPokemon(newPokemon);

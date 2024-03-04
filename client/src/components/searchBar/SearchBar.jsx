@@ -67,7 +67,7 @@ function SearchBar({ pokemons, onDataFromSearchBar }) {
     useEffect(() => {
         const fetchTypes = async () => {
             try {
-                const { data } = await axios.get('http://localhost:3001/types');
+                const { data } = await axios.get('/types');
                 setTypesOptions(data);
             } catch (error) {
                 console.error('Error fetching types:', error.message);

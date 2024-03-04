@@ -2,10 +2,10 @@ require('dotenv').config();
 const { Sequelize } = require('sequelize');
 const fs = require('fs');
 const path = require('path');
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_DATABASE } = process.env;
 
 const sequelize = new Sequelize(
-   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/pokemon`,
+   `postgresql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_DATABASE}`,
    {
       logging: false,
       native: false,
@@ -36,7 +36,7 @@ sequelize.models = Object.fromEntries(capsEntries);
 
 const { Pokemon, Type } = sequelize.models;
 
-Pokemon.belongsToMany(Type, {through: "pokemonType", as: 'PokemonTypes', timestamps: false});
+Pokemon.belongsToMany(Type, {through: "pokemonType", as: 'PokemonTypes', timestamps: false});   
 Type.belongsToMany(Pokemon, {through: "pokemonType", as: 'PokemonTypes', timestamps: false});
 
 module.exports = {
