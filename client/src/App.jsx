@@ -1,7 +1,7 @@
 import './App.css';
 import { Routes, Route } from 'react-router-dom';
-import LandingPage from './components/landingPage/landingPage.jsx';
-import HomePage from './components/homePage/homePage.jsx';
+import LandingPage from './components/landingPage/LandingPage.jsx';
+import HomePage from './components/homePage/HomePage.jsx';
 import { useEffect } from 'react';
 import axios from 'axios';
 const URL_API = import.meta.env.VITE_URL_API;
